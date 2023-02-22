@@ -1,0 +1,21 @@
+[submodule "pd-1"]
+	path = pd-1
+	url = git@github.com:simbafs/ncku-pd-1
+[submodule "ebook"]
+	path = ebook
+	url = git@github.com:simbafs/ncku-ebook
+[submodule "extended"]
+	path = extended
+	url = git@github.com:simbafs/ncku-extended
+[submodule "is"]
+	path = is
+	url = git@github.com:simbafs/ncku-is
+[submodule "millikan"]
+	path = millikan
+	url = git@github.com:simbafs/millikan
+[submodule "na"]
+	path = na
+	url = git@github.com:simbafs/ncku-na
+[submodule "physic-python-hw"]
+	path = physic-python-hw
+	url = git@github.com:simbafs/ncku-physic-python-hw
