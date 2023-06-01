@@ -110,8 +110,6 @@ WHERE
 ORDER BY dr3main.source_id 
 ```
 
-
-
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
@@ -367,8 +365,8 @@ c = data["mh_gspphot"]
 
 plt.scatter(ri, gr, c = c, s = 0.1, alpha = 0.5)
 
-plt.xlabel('$g_{SDSS}-r_{SDSS}$')
-plt.ylabel('$r_{SDSS}-i_{SDSS}$')
+plt.xlabel('$r_{SDSS}-i_{SDSS}$')
+plt.ylabel('$g_{SDSS}-r_{SDSS}$')
 plt.title('CC-diagram')
 
 plt.show()
@@ -441,8 +439,8 @@ plt.scatter(ri, gr, c = c, s = 0.1, alpha = 0.5)
 plt.plot(rmag - imag, gmag - rmag)
 plt.colorbar()
 
-plt.xlabel('$g_{SDSS}-r_{SDSS}$')
-plt.ylabel('$r_{SDSS}-i_{SDSS}$')
+plt.xlabel('$r_{SDSS}-i_{SDSS}$')
+plt.ylabel('$g_{SDSS}-r_{SDSS}$')
 plt.title('CC-diagram with theoretically')
 
 plt.show()
