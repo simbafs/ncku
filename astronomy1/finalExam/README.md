@@ -1,3 +1,117 @@
+https://gea.esac.esa.int/archive/
+```
+SELECT TOP 100
+dr3main.source_id,
+dr3main.random_index,
+dr3main.ra,
+dr3main.dec,
+--- parallax
+dr3main.parallax,
+dr3main.parallax_error,
+dr3main.parallax_over_error,
+--- photometry
+dr3main.phot_g_mean_mag,
+dr3main.phot_g_mean_flux_over_error,
+dr3main.phot_bp_mean_mag,
+dr3main.phot_bp_mean_flux_over_error,
+dr3main.phot_rp_mean_mag,
+dr3main.phot_rp_mean_flux_over_error,
+dr3main.bp_rp,
+dr3main.phot_g_mean_mag + 5.0 * LOG10(dr3main.parallax) - 10.0 as phot_mean_mg,
+1.0 / dr3main.parallax_over_error / LOG(10.0)                  as phot_mean_mg_error,
+--- Flags
+dr3main.phot_variable_flag,
+dr3main.in_qso_candidates,
+dr3main.in_galaxy_candidates,
+dr3main.non_single_star,
+--- probabilities
+dr3apar.classprob_dsc_combmod_quasar,
+dr3apar.classprob_dsc_combmod_galaxy,
+dr3apar.classprob_dsc_combmod_star,
+dr3apar.classprob_dsc_combmod_whitedwarf,
+dr3apar.classprob_dsc_combmod_binarystar,
+--- astrophysical parameters
+dr3apar.teff_gspphot,
+dr3apar.teff_gspphot_lower,
+dr3apar.teff_gspphot_upper,
+dr3apar.logg_gspphot,
+dr3apar.logg_gspphot_lower,
+dr3apar.logg_gspphot_upper,
+dr3apar.mh_gspphot,
+dr3apar.mh_gspphot_lower,
+dr3apar.mh_gspphot_upper,
+dr3apar.distance_gspphot,
+dr3apar.distance_gspphot_lower,
+dr3apar.distance_gspphot_upper,
+dr3apar.azero_gspphot,
+dr3apar.azero_gspphot_lower,
+dr3apar.azero_gspphot_upper,
+dr3apar.ag_gspphot,
+dr3apar.ag_gspphot_lower,
+dr3apar.ag_gspphot_upper,
+dr3apar.ebpminrp_gspphot,
+dr3apar.ebpminrp_gspphot_lower,
+dr3apar.ebpminrp_gspphot_upper,
+dr3apar.mg_gspphot,
+dr3apar.mg_gspphot_lower,
+dr3apar.mg_gspphot_upper,
+dr3apar.libname_gspphot,
+--- flame
+dr3apar.radius_flame,
+dr3apar.radius_flame_lower,
+dr3apar.radius_flame_upper,
+dr3apar.lum_flame,
+dr3apar.lum_flame_lower,
+dr3apar.lum_flame_upper,
+dr3apar.mass_flame,
+dr3apar.mass_flame_lower,
+dr3apar.mass_flame_upper,
+dr3apar.age_flame,
+dr3apar.age_flame_lower,
+dr3apar.age_flame_upper,
+dr3apar.flags_flame,
+dr3apar.evolstage_flame,
+--- synthetic colors
+dr3sync.c_star,
+dr3sync.u_sdss_mag,
+dr3sync.g_sdss_mag,
+dr3sync.r_sdss_mag,
+dr3sync.i_sdss_mag,
+dr3sync.z_sdss_mag,
+dr3sync.u_sdss_flux / dr3sync.u_sdss_flux_error AS u_sdss_flux_over_error,
+dr3sync.g_sdss_flux / dr3sync.g_sdss_flux_error AS g_sdss_flux_over_error,
+dr3sync.r_sdss_flux / dr3sync.r_sdss_flux_error AS r_sdss_flux_over_error,
+dr3sync.i_sdss_flux / dr3sync.i_sdss_flux_error AS i_sdss_flux_over_error,
+dr3sync.z_sdss_flux / dr3sync.z_sdss_flux_error AS z_sdss_flux_over_error,
+dr3sync.u_sdss_flag,
+dr3sync.g_sdss_flag,
+dr3sync.r_sdss_flag,
+dr3sync.i_sdss_flag,
+dr3sync.z_sdss_flag
+
+FROM gaiadr3.gaia_source                      AS dr3main
+    JOIN gaiadr3.astrophysical_parameters     AS dr3apar
+    ON dr3main.source_id = dr3apar.source_id
+
+    JOIN gaiadr3.synthetic_photometry_gspc    AS dr3sync
+    ON dr3main.source_id = dr3sync.source_id
+
+WHERE 
+        dr3main.parallax_over_error          > 10.0
+    AND dr3main.phot_g_mean_flux_over_error  > 20.0
+    AND dr3main.phot_bp_mean_flux_over_error > 20.0
+    AND dr3main.phot_rp_mean_flux_over_error > 20.0
+    AND dr3main.phot_bp_rp_excess_factor < 1.3 + 0.060 * POWER(dr3main.phot_bp_mean_mag - dr3main.phot_rp_mean_mag,2)
+    AND dr3main.phot_bp_rp_excess_factor > 1.0 + 0.015 * POWER(dr3main.phot_bp_mean_mag - dr3main.phot_rp_mean_mag,2)
+    AND dr3main.visibility_periods_used      > 8
+    AND dr3main.astrometric_chi2_al/(dr3main.astrometric_n_good_obs_al - 5) < 1.44 * GREATEST(1,EXP(-0.4 * (dr3main.phot_g_mean_mag - 19.5)))
+    AND dr3main.random_index BETWEEN 0 AND 10000000
+
+ORDER BY dr3main.source_id 
+```
+
+
+
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
