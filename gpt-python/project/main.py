@@ -1,3 +1,5 @@
+# ChatGPT link: https://chat.openai.com/share/4c2ffc97-0469-4ec5-a1ff-2277e75ec882
+
 import os
 import sys
 import time
