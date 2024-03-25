@@ -27,11 +27,10 @@ def parseHeader(headerText):
     return headers
 
 
-# magicN = 2
+magicN = 2
 
 
 def get_text_by_css_selector(url, selector, printStatus=False):
-    # if magicN == 0; return 38, else magicN -1
     # global magicN
     # print(magicN)
     # if magicN == 0:
@@ -116,21 +115,14 @@ if token is None:
 
 bot = telebot.TeleBot(token)
 
-url = "https://course.ncku.edu.tw/index.php?c=qry11215&m=en_query&i=U2RUawA2BjULclF3VzsBP1ZiU3RebAd2CDsHZwU9CzBVblYtVjxWPVM7UzsDPA02WmVVbVJmB2sFfF99Bj8GNgpmUHcIegFjBCQLZQInAjcCPVNsUiFXNV91BjwHeFwrAHJRawAyC2AGdQYlVHANNg0yUGgANQJuUSgHK1MjAztTNFRrACcGaAsrUT9XYwE0VmlTbV5y"
+url = "https://course.ncku.edu.tw/index.php?c=qry11215&m=en_query&i=UGQNOgEzDj8DdgEhVmwEM1I6USEMalMhWG9SPFQ4AzIAZwMnDGcGNldgX3oAMFN0Bm5fNAU8UWcBMwIoAz1WOQJuVGAMNFlpUzxbMlRlADxQeVV0W25XNVxqBSAEJQZsCXcEaFd1Vm1Wal5jDH0FMVcmDj9SLAB6AXpSOVE3BmlQJw1nASIOPgNvAWhWZwQ5Un0="
 print(url)
 default_selector = "#A9-table > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(8)"
 targetChat = "901756183"
-delay = 60
+delay = 30
 printStatus = True
 
-all_listeners = {
-    901756183: {
-        "https://course.ncku.edu.tw/index.php?c=qry11215&m=en_query&i=U2RUawA2BjULclF3VzsBP1ZiU3RebAd2CDsHZwU9CzBVblYtVjxWPVM7UzsDPA02WmVVbVJmB2sFfF99Bj8GNgpmUHcIegFjBCQLZQInAjcCPVNsUiFXNV91BjwHeFwrAHJRawAyC2AGdQYlVHANNg0yUGgANQJuUSgHK1MjAztTNFRrACcGaAsrUT9XYwE0VmlTbV5y": [
-            "#A9-table > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(8)",
-            0,
-        ]
-    }
-}
+all_listeners = {}
 
 
 @bot.message_handler(commands=["start", "help"])
@@ -229,5 +221,5 @@ def crawler():
 t1 = Thread(target=crawler)
 t2 = Thread(target=bot.infinity_polling)
 
-# t1.start()
+t1.start()
 t2.start()
