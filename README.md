@@ -11,3 +11,6 @@
 | 數據分析作業                       | [na](./na)                             |
 | 程設一作業                         | [pd-1](./pd-1)                         |
 | 普物課 python 作業                 | [physic-python-hw](./physic-python-hw) |
+| 資料結構                           | [ds](./ds/)                            |
+| 演算法                             | [algorithm](./algorithm/)              |
+| 計算機組織                         | [co](./co/)                            |
