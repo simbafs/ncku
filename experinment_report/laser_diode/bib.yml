@@ -1,0 +1,35 @@
+laser-principle:
+  type: web
+  title: 雷射-原理
+  url: https://zh.wikipedia.org/zh-tw/%E6%BF%80%E5%85%89#%E5%8E%9F%E7%90%86
+
+
+beam-divergence:
+  type: web
+  title: 光束發散角
+  url: https://en.wikipedia.org/wiki/Beam_divergence
+
+bib-aether:
+  type: web
+  title: 以太
+  url: https://zh.wikipedia.org/zh-tw/%E4%BB%A5%E5%A4%AA
+
+beam-diameter:
+  type: web
+  title: 光束直徑
+  url: https://en.wikipedia.org/wiki/Beam_diameter
+
+bib-handout:
+  type: reference
+  title: 成功大學物理光學教學實驗室講義 物理實驗四 實驗二 光柵
+  url: http://teachlab.phys.ncku.edu.tw/media/course_pdf/Grating107.pdf
+
+bib-textbook:
+  type: Book
+  title: OPTICS
+  edition: 5
+  author: Eugene Hecht
+  publisher: Pearson Education Limited
+  location: England
+  date: 2017
+  page-range: 496-505,632-633

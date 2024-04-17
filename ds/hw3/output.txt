@@ -1,0 +1,36 @@
+NuwVertices: 10
+A  0  3
+B  1  2
+C  2  4
+D  2  0
+E  3  2
+F  4  5
+G  5  3
+H  5  1
+I  6  4
+J  7  2
+S1  0  2
+S2  2  2
+S3  3  1
+S4  4  4
+S5  5  4
+S6  6  2
+
+NumEdges:15
+E1  A  S1
+E2  B  S1
+E3  B  S2
+E4  C  S2
+E5  D  S2
+E6  E  S2
+E7  E  S3
+E8  F  S4
+E9  G  H
+E10  G  S5
+E11  H  S3
+E12  I  S5
+E13  I  S6
+E14  J  S6
+E15  S4  S5
+
+WireLength: 20

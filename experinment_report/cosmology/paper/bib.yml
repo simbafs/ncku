@@ -1,0 +1,63 @@
+eFEDS-edr:
+    type: web
+    title: eFEDS Early Data Release
+    url: https://erosita.mpe.mpg.de/edr/eROSITAObservations/Catalogues/
+
+hsc:
+    type: web
+    title: the Hyper Suprime-Cam Subaru Strategic Program
+    url: https://en.wikipedia.org/wiki/Subaru_Telescope
+
+dark-matter:
+    type: web
+    title: Dark Matter
+    url: https://en.wikipedia.org/wiki/Dark_matter
+
+nfw-profile:
+    type: web
+    title: Navarro–Frenk–White profile
+    url: https://en.wikipedia.org/wiki/Navarro%E2%80%93Frenk%E2%80%93White_profile
+
+projected-nfw:
+    type: article
+    title: Cluster–galaxy weak lensing
+    author: Keiichi Umetsu
+    parent:
+        type: Periodical
+        title: The Astronomy and Astrophysics Review
+        volume: 28
+        date: 2020-7
+
+m500c:
+    type: article
+    title: Cosmological constraints from galaxy clusters and groups in the eROSITA final equatorial depth survey
+    author: [Chiu I-Non, Klein Matthias, Mohr Joseph, Bocquet Sebastian]
+    date: 2023-04
+    ISSN: 1365-2966
+    url: http://dx.doi.org/10.1093/mnras/stad957
+    page-range: 1601–1642
+    parent:
+        type: Periodical
+        title: Monthly Notices of the Royal Astronomical Society
+        volume: 522
+        publisher: Oxford University Press (OUP)
+
+poisson-dist:
+    type: web
+    title: Poisson Distribution
+    url: https://en.wikipedia.org/wiki/Poisson_distribution
+
+cash-statistic:
+    type: web
+    title: Cash Statistic
+    url: https://cxc.cfa.harvard.edu/sherpa/ahelp/cash.html
+
+redshift:
+    type: web
+    title: Redshift
+    url: https://lco.global/spacebook/light/redshift/
+
+bayes_theorem:
+    type: web
+    title: 貝式定理
+    url: https://zh.wikipedia.org/zh-tw/%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AE%9A%E7%90%86
