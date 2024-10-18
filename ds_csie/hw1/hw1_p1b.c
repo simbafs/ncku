@@ -3,19 +3,43 @@
 #include <string.h>
 
 #define MAX_SIZE 100
-#define bool int
-#define true 1
-#define false 0
 
-bool isOperator(char c) {
+typedef struct {
+  char data[MAX_SIZE];
+  int top;
+} Stack;
+
+void initStack(Stack *s) { s->top = -1; }
+
+int isEmpty(Stack *s) { return s->top == -1; }
+
+int isFull(Stack *s) { return s->top == MAX_SIZE - 1; }
+
+void push(Stack *s, char str) {
+  if (!isFull(s)) {
+    s->data[++s->top] = str;
+  } else {
+    printf("Stack overflow\n");
+  }
+}
+
+char pop(Stack *s) {
+  if (!isEmpty(s)) {
+    return s->data[s->top--];
+  } else {
+    return 0;
+  }
+}
+
+int isOperator(char c) {
   switch (c) {
   case '+':
   case '-':
   case '*':
   case '/':
-    return true;
+    return 1;
   default:
-    return false;
+    return 0;
   }
 }
 
@@ -32,38 +56,37 @@ int operatorPriority(char c) {
   }
 }
 
-char *char2Str(char c) {
-  char *str = (char *)malloc(2 * sizeof(char));
-  str[0] = c;
-  str[1] = '\0';
-  return str;
+int infixToPostfix(char *in) {
+  Stack s;
+  initStack(&s);
+
+  char out[MAX_SIZE];
+
+  int outIdx = 0;
+  for (int i = 0; i < strlen(in); i++) {
+    if (isOperator(in[i])) {
+      while (!isEmpty(&s) &&
+             operatorPriority(in[i]) <= operatorPriority(s.data[s.top])) {
+        out[outIdx++] = s.data[s.top--];
+      }
+      s.data[++s.top] = in[i];
+    } else {
+      out[outIdx++] = in[i];
+    }
+  }
+
+  while (!isEmpty(&s)) {
+    out[outIdx++] = s.data[s.top--];
+  }
+
+  out[outIdx] = '\0';
+  printf("%s\n", out);
 }
 
 int main() {
   char in[MAX_SIZE];
   scanf("%s", in);
-  // infix to postfix
 
-  // operator is placed in stack
-  char *stack = (char *)malloc(MAX_SIZE * sizeof(char));
-  int stackIdx = 0;
-
-  for (int i = 0; i < strlen(in); i++) {
-    if (isOperator(in[i])) {
-      // if there are operators in the stack with higher or equal priority,
-      // print them
-      while (stackIdx > 0 &&
-             operatorPriority(in[i]) <= operatorPriority(stack[stackIdx - 1])) {
-        printf("%c", stack[--stackIdx]);
-      }
-      stack[stackIdx++] = in[i];
-    } else {
-      // operand is printed directly
-      printf("%c", in[i]);
-    }
-  }
-
-  while (stackIdx > 0) {
-    printf("%c", stack[--stackIdx]);
-  }
+  infixToPostfix(in);
+  return 0;
 }

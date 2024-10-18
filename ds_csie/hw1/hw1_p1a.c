@@ -1,60 +1,73 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_SIZE 100
-#define bool int
-#define true 1
-#define false 0
+#define MAX 100
 
-bool isOperator(char c) {
-  switch (c) {
-  case '+':
-  case '-':
-  case '*':
-  case '/':
-    return true;
-  default:
-    return false;
+typedef struct {
+  char data[MAX][MAX];
+  int top;
+} Stack;
+
+void initStack(Stack *s) { s->top = -1; }
+
+int isEmpty(Stack *s) { return s->top == -1; }
+
+void push(Stack *s, char *str) {
+  if (s->top < MAX - 1) {
+    s->top++;
+    strcpy(s->data[s->top], str);
+  } else {
+    printf("Stack overflow\n");
   }
 }
 
-char *char2Str(char c) {
-  char *str = (char *)malloc(2 * sizeof(char));
-  str[0] = c;
-  str[1] = '\0';
-  return str;
+char *pop(Stack *s) {
+  if (!isEmpty(s)) {
+    return s->data[s->top--];
+  }
+  return NULL;
 }
 
-int main() {
-  char in[MAX_SIZE];
-  scanf("%s", in);
+int isOperator(char c) {
+  return (c == '+' || c == '-' || c == '*' || c == '/');
+}
 
-  char *stack[MAX_SIZE];
-  int index = 0;
+void prefixToInfix(char *prefix) {
+  Stack s;
+  initStack(&s);
 
-  for (int i = strlen(in) - 1; i >= 0; i--) {
-    /* printf("i = %d, index = %d\n", i, index); */
-    /* printf("queue: "); */
-    /* for (int j = 0; j < index; j++) { */
-    /*   printf("%s ", queue[j]); */
-    /* } */
-    /* printf("\n"); */
-    if (isOperator(in[i])) {
-      char *op = char2Str(in[i]);
-      char *a = stack[index - 1];
-      char *b = stack[index - 2];
-      stack[index - 2] =
-          (char *)malloc((strlen(a) + strlen(b) - 1) * sizeof(char));
-      sprintf(stack[index - 2], "%s%s%s", a, op, b);
-      index--;
+  int length = strlen(prefix);
 
-    } else {
-      stack[index++] = char2Str(in[i]);
+  for (int i = length - 1; i >= 0; i--) {
+    char current = prefix[i];
+
+    if (isOperator(current)) {
+      char *op1 = pop(&s);
+      char *op2 = pop(&s);
+
+      char temp[MAX];
+      sprintf(temp, "%s%c%s", op1, current, op2);
+
+      push(&s, temp);
+    }
+    else if (isalnum(current)) {
+      char operand[2] = {current, '\0'};
+      push(&s, operand);
     }
   }
 
-  printf("%s\n", stack[0]);
+  printf("%s\n", pop(&s));
+}
+
+int main() {
+  char prefix[MAX];
+
+  scanf("%s", prefix);
+
+  prefixToInfix(prefix);
 
   return 0;
 }
+
