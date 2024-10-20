@@ -3,7 +3,7 @@
 #import "@preview/cetz-venn:0.1.1": venn3, venn2
 
 #show: project.with(
-  hw: 1,
+  hw: [Discrete Math Homework 1],
 )
 
 = 1a
