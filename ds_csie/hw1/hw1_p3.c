@@ -19,13 +19,16 @@
     queue[rare] = value;                                                       \
     rare = (rare + 1) % n;                                                     \
   } else {                                                                     \
-    panic("Queue is full");                                                    \
+    /* error here */                                                           \
+    /* panic("Queue is full");  */                                             \
+    return 1;                                                                  \
   }
 #define queuePop(queue, front, n)                                              \
   if (!queueEmpty(front, rare)) {                                              \
     front = (front + 1) % n;                                                   \
   } else {                                                                     \
-    panic("Queue is empty");                                                   \
+    /* panic("Queue is empty"); */                                             \
+    return 0;                                                                  \
   }
 
 #define queuePrint(queue, front, rare, n)                                      \
@@ -48,12 +51,13 @@ int main() {
     visited[i] = 0;
   }
 
-  int queue[n];
+int queue_size = n*2;
+  int queue[queue_size];
   int front = 0;
   int rare = 0;
 
   visited[0] = 1;
-  queuePush(queue, rare, n, 0);
+  queuePush(queue, rare, queue_size, 0);
 
   while (!queueEmpty(front, rare)) {
     /* printf("visited: "); */
@@ -63,7 +67,7 @@ int main() {
     /* printf("front: %d, rare: %d\n", front, rare); */
 
     int vertex = queue[front];
-    queuePop(queue, front, n);
+    queuePop(queue, front, queue_size);
 
     /* printf("verted: %d\n", vertex + 1); */
 
@@ -72,7 +76,7 @@ int main() {
     for (int i = 0; i < n; i++) {
       if (matrix[vertex][i] && !visited[i]) {
         visited[i] = 1;
-        queuePush(queue, rare, n, i)
+        queuePush(queue, rare, queue_size, i)
       }
     }
   }
