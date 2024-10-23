@@ -74,6 +74,7 @@ int main(int argc, char *argv[]) {
   Message msg;
 
   Timer timer;
+  Timer_Init(&timer);
 
   printf("start sending message\n");
   while (fgets(buf, BUF_SIZE, file) != NULL) {

@@ -10,6 +10,7 @@ typedef struct {
   double Total;
 } Timer;
 
+void Timer_Init(Timer *timer);
 void Timer_Start(Timer *timer);
 void Timer_End(Timer *timer);
 

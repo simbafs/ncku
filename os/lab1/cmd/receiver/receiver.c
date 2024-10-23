@@ -76,6 +76,7 @@ int main(int argc, char *argv[]) {
   Message msg;
 
   Timer timer;
+  Timer_Init(&timer);
 
   while (1) {
     if (receive(&msg, &mbox, &timer) != 0) {
