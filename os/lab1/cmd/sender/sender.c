@@ -54,14 +54,12 @@ int main(int argc, char *argv[]) {
 
   int flag = atoi(argv[1]);
 
-  printf("init mailbox\n");
   Mailbox mbox;
   if (Mailbox_Init(&mbox, MAILBOX_NAME, flag, MODE_WRITE) != 0) {
     return 1;
   }
   Mailbox_Info(&mbox);
 
-  printf("open input file\n");
   FILE *file = fopen(argv[2], "r");
   if (file == NULL) {
     perror("fopen() failed");
@@ -74,7 +72,6 @@ int main(int argc, char *argv[]) {
   Timer timer;
   Timer_Init(&timer);
 
-  printf("start sending message\n");
   while (fgets(buf, BUF_SIZE, file) != NULL) {
     buf[strcspn(buf, "\n")] = 0; // remove newline character
 

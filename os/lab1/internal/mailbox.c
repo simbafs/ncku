@@ -9,6 +9,10 @@
 #include <unistd.h>
 
 int Message_Init(Message *msg) {
+  if (msg != NULL) {
+    // already initialized
+    return 0;
+  }
   msg = (Message *)malloc(sizeof(Message));
   if (msg == NULL) {
     perror("malloc() failed");
@@ -38,6 +42,42 @@ void Message_SetMsg(Message *msg, const char *str) {
   strncpy(msg->buf, str, BUF_SIZE - 1);
   // TODO: check msg->len
   msg->buf[msg->len] = '\0';
+}
+
+int Shm_Init(Shm **shm, char *name) {
+  int shm_fd = shm_open(name, O_CREAT | O_RDWR, 0666);
+  if (shm_fd == -1) {
+    perror("shm_open");
+    return 1;
+  }
+
+  if (ftruncate(shm_fd, sizeof(Shm)) == -1) {
+    perror("ftruncate");
+    return 1;
+  }
+
+  *shm = mmap(NULL, sizeof(Shm), PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+  if (shm == MAP_FAILED) {
+    perror("mmap");
+    return 1;
+  }
+
+  if ((*shm)->initialized != INITIALIZED) {
+    (*shm)->initialized = INITIALIZED;
+    if (sem_init(&(*shm)->read, 1, 0) == -1) {
+      perror("init read sem failed");
+      return 1;
+    }
+
+    if (sem_init(&(*shm)->write, 1, 1) == -1) {
+      perror("init write sem failed");
+      return 1;
+    }
+
+    Message_Init(&(*shm)->msg);
+  }
+
+  return 0;
 }
 
 // firsst run receiver, the run sender
@@ -79,65 +119,15 @@ int Mailbox_Init(Mailbox *mbox, char *name, int flag, int mode) {
 
   case MECH_SHARED_MEMORY:
     mbox->flag = MECH_SHARED_MEMORY;
-    int shm_fd;
 
-    switch (mode) {
-    case MODE_READ:
-      mbox->mode = MODE_READ;
-      shm_fd = shm_open(name, O_CREAT | O_RDWR, 0666);
-
-      if (shm_fd == -1) {
-        perror("shm_open");
-        return 1;
-      }
-
-      if (ftruncate(shm_fd, sizeof(Shm)) == -1) {
-        perror("ftruncate");
-        return 1;
-      }
-
-      mbox->storage.shm = mmap(NULL, sizeof(Shm), PROT_READ | PROT_WRITE,
-                               MAP_SHARED, shm_fd, 0);
-      if (mbox->storage.shm == MAP_FAILED) {
-        perror("mmap");
-        return 1;
-      }
-
-      if (sem_init(&mbox->storage.shm->read, 1, 0) == -1) {
-        perror("init read sem failed");
-        return 1;
-      }
-
-      if (sem_init(&mbox->storage.shm->write, 1, 1) == -1) {
-        perror("init write sem failed");
-        return 1;
-      }
-
-      Message_Init(&mbox->storage.shm->msg);
-
-      break;
-
-    case MODE_WRITE:
-      mbox->mode = MODE_WRITE;
-      shm_fd = shm_open(name, O_RDWR, 0666);
-      if (shm_fd == -1) {
-        perror("shm_open");
-        return 1;
-      }
-
-      mbox->storage.shm = mmap(NULL, sizeof(Shm), PROT_READ | PROT_WRITE,
-                               MAP_SHARED, shm_fd, 0);
-      if (mbox->storage.shm == MAP_FAILED) {
-        perror("mmap");
-        return 1;
-      }
-
-      break;
-
-    default:
+    if (mode != MODE_READ && mode != MODE_WRITE) {
       fprintf(stderr, "Invalid mode\n");
       return 1;
     }
+
+    mbox->mode = mode;
+
+    Shm_Init(&mbox->storage.shm, name);
 
     break;
 

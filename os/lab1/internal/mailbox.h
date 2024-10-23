@@ -33,12 +33,17 @@ void Message_SetMsg(Message *msg, const char *str);
 
 // shared memory
 
+#define INITIALIZED 0x12345678
+
 typedef struct {
+  uint initialized;
   Message msg;
 
   sem_t read;
   sem_t write;
 } Shm;
+
+int Shm_Init(Shm **shm, char *name);
 
 // mailbox
 
