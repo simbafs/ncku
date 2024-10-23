@@ -6,23 +6,21 @@
 #include <time.h>
 
 int send(Message msg, Mailbox *mbox, Timer *timer) {
-  int v;
+  int err;
   switch (mbox->flag) {
   case MECH_MESSAGE_QUEUE:
     Timer_Start(timer);
-    if (mq_send(mbox->storage.mq, msg.buf, msg.len, 0) == -1) {
+    err = mq_send(mbox->storage.mq, msg.buf, msg.len, 0);
+    Timer_End(timer);
+
+    if (err == -1) {
       perror("mq_send() failed");
       Timer_End(timer);
       return 1;
     }
-    Timer_End(timer);
 
     break;
   case MECH_SHARED_MEMORY:
-    sem_getvalue(&mbox->storage.shm->write, &v);
-
-    /* printf("waiting for write semaphore %d\n", v); */
-
     if (sem_wait(&mbox->storage.shm->write) == -1) {
       perror("sem_wait() failed");
       return 1;

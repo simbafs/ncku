@@ -34,7 +34,6 @@ void Message_SetMsg(Message *msg, const char *str);
 // shared memory
 
 typedef struct {
-  // TODO: using double pointer to prevent extra string copy
   Message msg;
 
   sem_t read;

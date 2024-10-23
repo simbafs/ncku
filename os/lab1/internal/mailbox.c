@@ -36,11 +36,11 @@ void Message_SetMsg(Message *msg, const char *str) {
   }
   msg->len = strlen(str);
   strncpy(msg->buf, str, BUF_SIZE - 1);
+  // TODO: check msg->len
   msg->buf[msg->len] = '\0';
 }
 
 // firsst run receiver, the run sender
-
 int Mailbox_Init(Mailbox *mbox, char *name, int flag, int mode) {
   switch (flag) {
   case MECH_MESSAGE_QUEUE:

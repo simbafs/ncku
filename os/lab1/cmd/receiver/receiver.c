@@ -14,20 +14,14 @@ int receive(Message *msg, Mailbox *mbox, Timer *timer) {
   switch (mbox->flag) {
   case MECH_MESSAGE_QUEUE:
     Timer_Start(timer);
-    // TODO: subtract the blocking time, maybe with mq_timedreceive
+    // TODO: subtract the blocking time
     len = mq_receive(mbox->storage.mq, buf, BUF_SIZE, NULL);
     Timer_End(timer);
+
     if (len >= 0) {
       buf[len] = '\0';
 
-      if (strcmp(buf, CMD_EXIT) == 0) {
-        msg->type = TYPE_EXIT;
-      } else {
-        msg->type = TYPE_MSG;
-      }
-
-      msg->len = len;
-      strncpy(msg->buf, buf, len + 1);
+      Message_SetMsg(msg, buf);
     } else {
       perror("mq_receive() failed");
       return 1;
@@ -58,7 +52,6 @@ int receive(Message *msg, Mailbox *mbox, Timer *timer) {
   return 0;
 }
 
-// ./receiver 1
 int main(int argc, char *argv[]) {
   if (argc != 2) {
     printf("Usage: %s <1|2>\n", argv[0]);
