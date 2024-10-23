@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
 
   printf("\033[93mSender exit!\033[39m\n");
 
-  printf("total time: %f\n", timer.Total);
+  printf("total time: %f µs\n", timer.Total);
 
   Mailbox_Close(&mbox);
   Mailbox_Destroy(&mbox);

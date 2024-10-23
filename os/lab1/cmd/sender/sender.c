@@ -90,7 +90,8 @@ int main(int argc, char *argv[]) {
   }
 
   // TODO: sometimes, this will be -nan
-  printf("total time: %f\n", timer.Total);
+  // I have no idea how to reproduc this issue
+  printf("total time: %f µs\n", timer.Total);
 
   fclose(file);
   Mailbox_Close(&mbox);
