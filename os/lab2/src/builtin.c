@@ -98,7 +98,7 @@ const char *builtin_str[] = {
     "help", "cd", "pwd", "echo", "exit", "record",
 };
 
-const int (*builtin_func[])(char **) = {
+int (*builtin_func[])(char **) = {
     &help, &cd, &pwd, &echo, &exit_shell, &record,
 };
 

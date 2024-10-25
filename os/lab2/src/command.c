@@ -43,8 +43,9 @@ struct cmd *split_line(char *line) {
   struct cmd *new_cmd = (struct cmd *)malloc(sizeof(struct cmd));
   new_cmd->head = (struct cmd_node *)malloc(sizeof(struct cmd_node));
   new_cmd->head->args = (char **)malloc(args_length * sizeof(char *));
-  for (int i = 0; i < args_length; ++i)
+  for (int i = 0; i < args_length; ++i) {
     new_cmd->head->args[i] = NULL;
+  }
   new_cmd->head->length = 0;
   new_cmd->head->next = NULL;
   new_cmd->pipe_num = 0;

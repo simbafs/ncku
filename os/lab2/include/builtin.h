@@ -14,7 +14,7 @@ int record(char **args);
 
 extern const char *builtin_str[];
 
-extern const int (*builtin_func[])(char **);
+extern int (*builtin_func[])(char **);
 
 extern int num_builtins();
 
