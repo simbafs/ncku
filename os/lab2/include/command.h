@@ -5,6 +5,7 @@
 #define BUF_SIZE 1024
 
 #include <stdbool.h>
+#include <stdio.h>
 
 struct cmd_node {
   char **args;
@@ -24,6 +25,9 @@ extern int history_count;
 
 char *read_line();
 struct cmd *split_line(char *);
-void test_cmd_struct(struct cmd *);
-void test_pipe_struct(struct cmd_node *pipe);
+void test_cmd_struct(FILE *f, struct cmd *);
+void test_pipe_struct(FILE *f, struct cmd_node *p);
+void print_cmd(FILE *f, struct cmd_node *p);
+void print_cmds(FILE *f, struct cmd *cmd);
+
 #endif

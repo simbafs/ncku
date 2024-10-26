@@ -1,0 +1,4 @@
+builtin.o 
+command.o 
+shell.o
+my_shell

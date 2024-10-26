@@ -57,7 +57,8 @@ struct cmd *split_line(char *line) {
   temp->out = 1;
   char *token = strtok(line, " ");
   while (token != NULL) {
-    if (token[0] == '|') {
+    switch (token[0]) {
+    case '|':;
       struct cmd_node *new_pipe =
           (struct cmd_node *)malloc(sizeof(struct cmd_node));
       new_pipe->args = (char **)malloc(args_length * sizeof(char *));
@@ -67,16 +68,23 @@ struct cmd *split_line(char *line) {
       new_pipe->next = NULL;
       temp->next = new_pipe;
       temp = new_pipe;
-    } else if (token[0] == '<') {
+      break;
+
+    case '<':
       token = strtok(NULL, " ");
       temp->in_file = token;
-    } else if (token[0] == '>') {
+      break;
+
+    case '>':
       token = strtok(NULL, " ");
       temp->out_file = token;
-    } else {
+      break;
+
+    default:
       temp->args[temp->length] = token;
       temp->length++;
     }
+
     token = strtok(NULL, " ");
     new_cmd->pipe_num++;
   }
@@ -88,20 +96,25 @@ struct cmd *split_line(char *line) {
  *
  * @param cmd Command structure
  */
-void test_cmd_struct(struct cmd *cmd) {
+void test_cmd_struct(FILE *f, struct cmd *cmd) {
   struct cmd_node *temp = cmd->head;
   int pipe_count = 0;
-  printf("============ COMMAND INFO ============\n");
+  fprintf(f, "============ COMMAND INFO ============\n");
+  fflush(f);
   while (temp != NULL) {
-    printf("cmd_node %d: ", pipe_count);
+    fprintf(f, "cmd_node %d: ", pipe_count);
+    fflush(f);
     for (int i = 0; i < temp->length; ++i) {
-      printf("%s ", temp->args[i]);
+      fprintf(f, "%s ", temp->args[i]);
+      fflush(f);
     }
-    printf("\n");
+    fprintf(f, "\n");
+    fflush(f);
     temp = temp->next;
     ++pipe_count;
   }
-  printf("============ COMMAND INFO END ============\n");
+  fprintf(f, "============ COMMAND INFO END ============\n");
+  fflush(f);
 }
 
 /**
@@ -109,15 +122,42 @@ void test_cmd_struct(struct cmd *cmd) {
  *
  * @param temp cmd_node structure
  */
-void test_pipe_struct(struct cmd_node *temp) {
-  printf("============ CMD_NODE INFO ============\n");
+void test_pipe_struct(FILE *f, struct cmd_node *temp) {
+  fprintf(f, "============ CMD_NODE INFO ============\n");
+  fflush(f);
 
   for (int i = 0; i < temp->length; ++i) {
-    printf("temp->args[%d] :%s \n", i, temp->args[i]);
+    fprintf(f, "temp->args[%d] :%s \n", i, temp->args[i]);
+    fflush(f);
   }
-  printf(" in-file: %s\n", temp->in_file ? temp->in_file : "none");
-  printf("out-file: %s\n", temp->out_file ? temp->out_file : "none");
-  printf(" in: %d\n", temp->in);
-  printf("out: %d\n", temp->out);
-  printf("============ CMD_NODE END ============\n");
+  fprintf(f, " in-file: %s\n", temp->in_file ? temp->in_file : "none");
+  fflush(f);
+  fprintf(f, "out-file: %s\n", temp->out_file ? temp->out_file : "none");
+  fflush(f);
+  fprintf(f, " in: %d\n", temp->in);
+  fflush(f);
+  fprintf(f, "out: %d\n", temp->out);
+  fflush(f);
+  fprintf(f, "============ CMD_NODE END ============\n");
+  fflush(f);
+}
+
+void print_cmd(FILE *f, struct cmd_node *cmd) {
+  fprintf(f, "cmd_node: ");
+  for (int i = 0; i < cmd->length; ++i) {
+    fprintf(f, "%s ", cmd->args[i]);
+  }
+  fprintf(f, " in file: %s, out file: %s, in: %d, out: %d\n", cmd->in_file,
+          cmd->out_file, cmd->in, cmd->out);
+
+  fflush(f);
+}
+
+void print_cmds(FILE *f, struct cmd *cmd) {
+  struct cmd_node *curr = cmd->head;
+  while (curr != NULL) {
+    print_cmd(f, curr);
+
+    curr = curr->next;
+  }
 }
